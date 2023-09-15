@@ -1,0 +1,17 @@
+.progress-bar {
+  left: 0;
+  height: 20px;
+  animation-name: progressbar;
+  animation-duration: 16s;
+}
+
+@keyframes progressbar {
+  from {
+    background-color: red;
+    width: 100px;
+  }
+  to {
+    background-color: yellow;
+    width: 0px;
+  }
+}
