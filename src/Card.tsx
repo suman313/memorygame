@@ -1,20 +1,14 @@
 import React, { useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import "./card.css";
-function Card() {
-  const [numberBank, setNumberBank] = useState<number[]>([]);
+type props = {
+  uniqueNumberGenerator: () => void;
+  numberBank: number[];
+};
+function Card({ uniqueNumberGenerator, numberBank }: props) {
   const [seconds, setSeconds] = useState(0);
-  const uniqueNumberGenerator = () => {
-    let tempArray: number[] = [];
-    while (tempArray.length < 6) {
-      let randomNum = Math.floor(Math.random() * 10 + 1);
-      if (tempArray.includes(randomNum)) continue;
-      else tempArray.push(randomNum);
-    }
-    setNumberBank(tempArray);
-  };
+
   useEffect(() => {
-    uniqueNumberGenerator();
     let getSeconds = setInterval(() => {
       setSeconds((prev) => {
         let newTime = prev + 1;
@@ -24,12 +18,13 @@ function Card() {
         return newTime;
       });
     }, 1000);
+
     return () => clearInterval(getSeconds);
   }, []);
   return (
     <div>
       {/* <div className="progress-bar"></div> */}
-      {seconds < 31 && (
+      {seconds < 30 && (
         <ProgressBar
           completed={seconds}
           maxCompleted={30}
