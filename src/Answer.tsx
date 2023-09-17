@@ -21,22 +21,27 @@ function Answer({ numberBank }: props) {
   }
   const shuffledNumbers = () => {
     console.log(numberBank);
+    if (numberBank.length > 0) {
+      let tempArray: number[] = [...numberBank];
+      let alternate = 1;
+      while (tempArray.length < 17) {
+        alternate++;
+        if (alternate % 2 == 0)
+          var randomNum = Math.floor(Math.random() * 100 + 1);
+        else var randomNum = Math.floor(Math.random() * 10 + 1);
+        if (tempArray.includes(randomNum)) continue;
+        else tempArray.push(randomNum);
+      }
+      // let allSixteenNumbers = [...tempArray, ...numberBank];
+      // console.log(allSixteenNumbers);
 
-    let tempArray: number[] = [];
-    let alternate = 1;
-    while (tempArray.length < 10) {
-      if (alternate % 2 == 0)
-        var randomNum = Math.floor(Math.random() * 100 + 1);
-      else var randomNum = Math.floor(Math.random() * 10 + 1);
-      if (tempArray.includes(randomNum) || numberBank.includes(randomNum))
-        continue;
-      else tempArray.push(randomNum);
+      let getShuffeldNumbers: number[] = shuffleArray(tempArray);
+      setScatterdNumbers(getShuffeldNumbers);
     }
-    let allSixteenNumbers = [...tempArray, ...numberBank];
-    console.log(allSixteenNumbers);
-
-    let getShuffeldNumbers: number[] = shuffleArray(allSixteenNumbers);
-    setScatterdNumbers(getShuffeldNumbers);
+    else {
+      console.log("Numberbank length is zero");
+      
+    }
   };
   useEffect(() => {
     shuffledNumbers();
