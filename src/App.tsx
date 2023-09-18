@@ -4,6 +4,7 @@ import Answer from "./Answer";
 
 function App() {
   const [numberBank, setNumberBank] = useState<number[]>([]);
+  const [timesUp, setTimesUp] = useState<number>(0);
   const uniqueNumberGenerator = () => {
     let tempArray: number[] = [];
     while (tempArray.length < 6) {
@@ -18,11 +19,12 @@ function App() {
   }, []);
   return (
     <div className="flex justify-center items-center mt-[5%]">
-      <Card
+      {timesUp==0 && <Card
         uniqueNumberGenerator={uniqueNumberGenerator}
         numberBank={numberBank}
-      />
-      <Answer numberBank={numberBank} />
+        setTimesUp={setTimesUp}
+      />}
+      {timesUp==1 && <Answer numberBank={numberBank} />}
     </div>
   );
 }
