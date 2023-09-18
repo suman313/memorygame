@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import "./card.css";
 type props = {
   uniqueNumberGenerator: () => void;
   numberBank: number[];
+  setTimesUp: React.Dispatch<SetStateAction<number>>;
 };
-function Card({ uniqueNumberGenerator, numberBank }: props) {
+function Card({ uniqueNumberGenerator, numberBank, setTimesUp }: props) {
   const [seconds, setSeconds] = useState(0);
 
   useEffect(() => {
@@ -13,6 +14,7 @@ function Card({ uniqueNumberGenerator, numberBank }: props) {
       setSeconds((prev) => {
         let newTime = prev + 1;
         if (newTime > 29) {
+          setTimesUp(1);
           clearInterval(getSeconds);
         }
         return newTime;
@@ -24,14 +26,12 @@ function Card({ uniqueNumberGenerator, numberBank }: props) {
   return (
     <div>
       {/* <div className="progress-bar"></div> */}
-      {seconds < 30 && (
-        <ProgressBar
-          completed={seconds}
-          maxCompleted={30}
-          customLabel={`${seconds} seconds left`}
-        />
-      )}
-      {seconds > 29 && <p>Times Up</p>}
+
+      <ProgressBar
+        completed={seconds}
+        maxCompleted={30}
+        customLabel={`${seconds} seconds left`}
+      />
       <div className="flex flex-col justify-center items-center">
         <div className="grid grid-cols-3">
           {numberBank.map((item) => (
