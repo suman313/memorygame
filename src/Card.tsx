@@ -1,5 +1,6 @@
 import React, { SetStateAction, useEffect, useState } from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
+import { RotatingLines } from "react-loader-spinner";
 import "./card.css";
 type props = {
   uniqueNumberGenerator: () => void;
@@ -7,14 +8,19 @@ type props = {
   setTimesUp: React.Dispatch<SetStateAction<number>>;
 };
 function Card({ uniqueNumberGenerator, numberBank, setTimesUp }: props) {
-  const [seconds, setSeconds] = useState(0);
+  const [seconds, setSeconds] = useState<number>(0);
+  const [loader, setLoader] = useState<boolean>(false);
 
   useEffect(() => {
     let getSeconds = setInterval(() => {
       setSeconds((prev) => {
         let newTime = prev + 1;
-        if (newTime > 29) {
-          setTimesUp(1);
+        if (newTime > 10) {
+          setLoader(true);
+          setTimeout(() => {
+            setTimesUp(1);
+          }, 2000);
+
           clearInterval(getSeconds);
         }
         return newTime;
@@ -23,14 +29,15 @@ function Card({ uniqueNumberGenerator, numberBank, setTimesUp }: props) {
 
     return () => clearInterval(getSeconds);
   }, []);
+  if (loader) return <RotatingLines />;
   return (
     <div>
       {/* <div className="progress-bar"></div> */}
 
       <ProgressBar
         completed={seconds}
-        maxCompleted={30}
-        customLabel={`${seconds} seconds left`}
+        maxCompleted={10}
+        customLabel={`${seconds}`}
       />
       <div className="flex flex-col justify-center items-center">
         <div className="grid grid-cols-3">
