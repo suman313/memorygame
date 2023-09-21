@@ -50,6 +50,7 @@ function Answer({ numberBank }: props) {
     }
   };
   useEffect(() => {
+    
     shuffledNumbers();
   }, [numberBank]);
   const selectedNumbers = (num: number) => {
