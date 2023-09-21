@@ -1,4 +1,6 @@
 import React, { useEffect, useState } from "react";
+import { createPortal } from "react-dom";
+import Modal from "./components/Modals/Modal";
 type props = {
   numberBank: number[];
 };
@@ -8,6 +10,8 @@ function Answer({ numberBank }: props) {
   const [wrongDetection, setWrongDetection] = useState<boolean>(false);
   const [lengthOfSelectedElements, setLengthOfSelectedElements] =
     useState<number>(0);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [msg, setMsg] = useState<string>("");
   function shuffleArray(array: number[]) {
     // Create a copy of the original array to avoid modifying it directly
     const shuffledArray = [...array];
@@ -60,30 +64,37 @@ function Answer({ numberBank }: props) {
       //check if the length of the selected elements matches the length of selected elements array
       console.log(selectedElements);
       if (selectedElements.length == 5) {
-        alert("Congratulations! You have a great memory.....");
-        window.location.reload();
+        setMsg("Congratulations! You have a great memory....");
+        setShowModal(true);
       }
     } else {
       //update the color of the worng selected div
-      alert("you have chosen a wrong number");
-      window.location.reload();
+      setMsg("Oops! You have chosen a wrong number");
+      setShowModal(true);
     }
   };
 
   return (
-    <div className="grid grid-cols-4 gap-8">
-      {scatteredNumbers.map((item) => (
-        <button
-          onClick={() => selectedNumbers(item)}
-          className={`px-4 py-0 text-[4rem] font-bold text-center text-white  rounded-[9px] ${
-            selectedElements.includes(item) ? "bg-[#6a6e6b]" : "bg-[#2c9572]"
-          }`}
-          disabled={selectedElements.includes(item)}
-        >
-          {item}
-        </button>
-      ))}
-    </div>
+    <>
+      <div className="grid grid-cols-4 gap-8">
+        {scatteredNumbers.map((item) => (
+          <button
+            onClick={() => selectedNumbers(item)}
+            className={`px-4 py-0 text-[4rem] font-bold text-center text-white  rounded-[9px] ${
+              selectedElements.includes(item) ? "bg-[#0dea44]" : "bg-[#b2a9a3]"
+            }`}
+            disabled={selectedElements.includes(item)}
+          >
+            {item}
+          </button>
+        ))}
+      </div>
+      {showModal &&
+        createPortal(
+          <Modal setShowModal={setShowModal} msg={msg} />,
+          document.body
+        )}
+    </>
   );
 }
 

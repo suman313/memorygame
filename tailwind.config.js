@@ -4,5 +4,6 @@ module.exports = {
   theme: {
     extend: {},
   },
+  typeRoots: ["node_modules/@types", "custom_typings/"],
   plugins: [],
 };
